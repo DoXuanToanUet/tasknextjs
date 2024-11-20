@@ -29,15 +29,15 @@ export const GlobalProvider = ({children}) =>{
    const collapseMenu = () => {
       setCollapsed(!collapsed);
     };
-   // const filteredTasks = tasks.filter((task) =>
-   //    task.title.toLowerCase().includes(searchQuery.toLowerCase())
-   // );
+   const filteredTasks = tasks.filter((task) =>
+      task.title.toLowerCase().includes(searchQuery.toLowerCase())
+   );
    // console.log("Search Query:", searchQuery); // Log từ khóa tìm kiếm
    // console.log("Filtered Tasks:", filteredTasks); // Log danh sách nhiệm vụ được lọc
-   const allTasks = async (page = 1, limit = 3) => {
+   const allTasks = async (page = 1, limit = 20) => {
       setIsLoading(true);
       try {
-        const res = await axios.get(`/api/tasks?page=${page}&limit=${limit}`);
+        const res = await axios.get(`/api/tasks?page=${page}&limit=${limit}&search=${searchQuery}`);
         console.log("API Response with Pagination:", res.data);
         const { tasks, totalPages } = res.data;
       //   const sorted = res.data.sort((a, b) => {
@@ -79,8 +79,8 @@ export const GlobalProvider = ({children}) =>{
    };
   
    React.useEffect(() => {
-      if (user) allTasks();
-    }, [user]);
+      if (user) allTasks(currentPage);
+    }, [user,searchQuery, currentPage]);
    const completedTasks = tasks.filter((task) => task.isCompleted === true);
    const importantTasks = tasks.filter((task) => task.isImportant === true);
    const incompleteTasks = tasks.filter((task) => task.isCompleted === false);
@@ -103,7 +103,7 @@ export const GlobalProvider = ({children}) =>{
             closeModal,
             collapsed,
             collapseMenu,
-            // filteredTasks, // Thêm danh sách được lọc
+            filteredTasks, // Thêm danh sách được lọc
             setSearchQuery, // Hàm để cập nhật từ khóa tìm kiếm
            
          }}

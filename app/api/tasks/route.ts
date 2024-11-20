@@ -48,13 +48,17 @@ export async function GET(req: Request) {
       const { searchParams } = new URL(req.url);
       const page = parseInt(searchParams.get("page") || "1", 10); // Trang hiện tại
       const limit = parseInt(searchParams.get("limit") || "2", 10); // Số nhiệm vụ mỗi trang
-
+      const search = searchParams.get("search") || "";
       const skip = (page - 1) * limit; // Bỏ qua số lượng nhiệm vụ ở các trang trước
 
       // Lấy danh sách nhiệm vụ với phân trang
       const tasks = await prisma.task.findMany({
          where: {
             userId,
+            title: {
+               contains: search, // Tìm kiếm theo tiêu đề
+               mode: "insensitive", // Không phân biệt chữ hoa/thường
+            },
          },
          skip: skip,
          take: limit,
@@ -67,6 +71,10 @@ export async function GET(req: Request) {
       const totalTasks = await prisma.task.count({
          where: {
             userId,
+            title: {
+               contains: search,
+               mode: "insensitive",
+            },
          },
       });
 
