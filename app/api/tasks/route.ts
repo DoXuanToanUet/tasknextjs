@@ -43,18 +43,47 @@ export async function GET(req: Request) {
       const { userId } = await auth();
       if (!userId) {
          return NextResponse.json({ error: "Unauthorized", status: 401 });
-       }
+      }
+
+      const { searchParams } = new URL(req.url);
+      const page = parseInt(searchParams.get("page") || "1", 10); // Trang hiện tại
+      const limit = parseInt(searchParams.get("limit") || "2", 10); // Số nhiệm vụ mỗi trang
+
+      const skip = (page - 1) * limit; // Bỏ qua số lượng nhiệm vụ ở các trang trước
+
+      // Lấy danh sách nhiệm vụ với phân trang
       const tasks = await prisma.task.findMany({
          where: {
             userId,
          },
+         skip: skip,
+         take: limit,
+         orderBy: {
+            date: "desc", // Sắp xếp theo ngày giảm dần
+         },
       });
-      return NextResponse.json(tasks);
+
+      // Đếm tổng số nhiệm vụ để tính tổng số trang
+      const totalTasks = await prisma.task.count({
+         where: {
+            userId,
+         },
+      });
+
+      const totalPages = Math.ceil(totalTasks / limit);
+
+      return NextResponse.json({
+         tasks,
+         page,
+         totalPages,
+         totalTasks,
+      });
    } catch (error) {
       console.log("ERROR GETTING TASKS: ", error);
-      return NextResponse.json({ error: "Error updating task", status: 500 });
+      return NextResponse.json({ error: "Error getting tasks", status: 500 });
    }
 }
+
 
 export async function PUT(req: Request) {
    try {
