@@ -81,10 +81,28 @@ const TaskItemStyled = styled.div`
   }
 
   > h1 {
-    font-size: 1.5rem;
-    font-weight: 600;
+   font-size: 1.5rem;
+   font-weight: 600;
+   line-height: 1.4;
+   overflow: hidden;
+   display: -webkit-box;
+   -webkit-line-clamp: 2; /* Hiển thị tối đa 2 dòng */
+   -webkit-box-orient: vertical;
+   text-overflow: ellipsis;
+   margin: 0; /* Đảm bảo không có khoảng trắng thừa */
+    color: ${(props) => props.theme.colorGrey2};
   }
-
+   > p {
+      font-size: 1rem;
+      color: ${(props) => props.theme.colorGrey2};
+      line-height: 1.4;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2; /* Hiển thị tối đa 2 dòng */
+      -webkit-box-orient: vertical;
+      text-overflow: ellipsis;
+      margin: 0; /* Đảm bảo không có khoảng trắng thừa */
+   }
   .task-footer {
     display: flex;
     align-items: center;

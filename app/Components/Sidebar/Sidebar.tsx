@@ -8,10 +8,10 @@ import Link from 'next/link';
 import { usePathname, useRouter } from "next/navigation";
 import { useUser } from '@clerk/nextjs';
 import { useClerk, UserButton} from '@clerk/nextjs';
-import { arrowLeft, bars, logout } from "@/app/utils/Icons";
+import { arrowLeft, bars, logout,sun ,moon } from "@/app/utils/Icons";
 import Button from "../Button/Button";
 const Sidebar = () => {
-   const {theme,collapsed, collapseMenu} = useGlobalState()
+   const {theme,collapsed, collapseMenu, toggleTheme } = useGlobalState()
    const { user } = useUser();
    const { signOut } = useClerk();
    const { firstName, lastName, imageUrl } = user || {
@@ -74,6 +74,10 @@ const Sidebar = () => {
           }}
         />
       </div>
+       {/* Thêm nút chuyển đổi chế độ sáng/tối */}
+       <button className="theme-toggle" onClick={toggleTheme}>
+         {theme.name=== "light" ? sun : moon}
+       </button>
     </SidebarStyled>
   )
 }

@@ -24,9 +24,9 @@ const ModalStyled = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 50px);
   z-index: 100;
-
+  
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,13 +43,13 @@ const ModalStyled = styled.div`
 
   .modal-content {
     margin: 0 1rem;
-
+    overflow:auto;
     padding: 2rem;
     position: relative;
     max-width: 630px;
     width: 100%;
     z-index: 100;
-
+    height:90%;
     border-radius: 1rem;
     background-color: ${(props) => props.theme.colorBg2};
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);

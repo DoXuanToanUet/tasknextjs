@@ -23,6 +23,9 @@ export const GlobalProvider = ({children}) =>{
    const openModal = () => {
       setModal(true);
     };
+    const toggleTheme = () => {
+      setSelectedTheme((prev) => (prev === 0 ? 1 : 0));
+    };
    const closeModal = () => {
       setModal(false);
    };
@@ -88,6 +91,7 @@ export const GlobalProvider = ({children}) =>{
       <GlobalContext.Provider
          value={{
             theme,
+            toggleTheme,
             isLoading,
             tasks,
             allTasks,
